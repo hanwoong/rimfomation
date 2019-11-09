@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(transform.rotation.eulerAngles);
+       
         WGCheck();
      MouseMove();
         StartCoroutine(DashCheck());
@@ -80,21 +80,36 @@ public class PlayerMovement : MonoBehaviour
                 {
                     foreach (ContactPoint contact in col.contacts)
                     {
-                        Debug.Log(contact.point + "wall jump!");
+                     
                         rb.AddExplosionForce(20, contact.point, 0.7f,2);
                     }
                 }
             }
-            Debug.Log("wall is ture");
+         
         }
+       
     }
+    
     void OnCollisionExit(Collision col)
     {
         if (col.gameObject.tag.Equals("Wall"))
         {
             WCheck = false;
-            Debug.Log("wall is false");
+        
         }
+    }
+    void OnTriggerStay(Collider col)
+    {
+        if (col.gameObject.tag.Equals("Data"))
+        {
+            if (Input.GetKeyDown(key: act1))
+            {
+                Vector3[] vectors = col.GetComponent<Data>().Vectors;
+                float[] time = col.GetComponent<Data>().Time;
+                System.Array.Resize(ref time, vectors.Length);
+                
+            }
+        } 
     }
     void MouseMove()
     {
@@ -166,9 +181,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 rb.AddForce((this.gameObject.transform.forward * 5 + this.gameObject.transform.up * 4), ForceMode.VelocityChange);
                 JumpCount--;
-                Debug.Log("long jump!");
+          
             }
-            else { rb.AddForce(new Vector3(0, 5, 0), ForceMode.VelocityChange); JumpCount--; Debug.Log("jump!"); }
+            else { rb.AddForce(new Vector3(0, 5, 0), ForceMode.VelocityChange); JumpCount--;  }
 
         }
     }
